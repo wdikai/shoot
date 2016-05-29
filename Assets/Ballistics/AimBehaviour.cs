@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
-using System.Collections;
 
 public class AimBehaviour : MonoBehaviour {
 
     public Texture2D CrossFire;
     public GameObject Camera;
+    public GameObject weapon;
     public FirstPersonController FirstPersonController;
 
     private bool aim = false;
@@ -16,6 +16,8 @@ public class AimBehaviour : MonoBehaviour {
     {
         mainCamera = Camera.GetComponent<Camera>();
         mouseLook = FirstPersonController.m_MouseLook;
+        mouseLook.XSensitivity = 1;
+        mouseLook.YSensitivity = 1;
     }
 
     void Update () {
@@ -35,6 +37,7 @@ public class AimBehaviour : MonoBehaviour {
         }
         mouseLook.XSensitivity = 0.1f;
         mouseLook.YSensitivity = 0.1f;
+        weapon.SetActive(false);
     }
 
     void AimOff()
@@ -45,8 +48,9 @@ public class AimBehaviour : MonoBehaviour {
             mainCamera.depth = 0;
             mainCamera.fieldOfView = 60;
         }
-        mouseLook.XSensitivity = 10;
-        mouseLook.YSensitivity = 10;
+        mouseLook.XSensitivity = 1;
+        mouseLook.YSensitivity = 1;
+        weapon.SetActive(true);
     }
 
     void OnGUI()
