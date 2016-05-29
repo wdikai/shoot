@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class GravityBehaviour : MonoBehaviour {
-
-    public bool hasGravity = true;
+public class GravityBehaviour : MonoBehaviour
+{
+   
     public float Gravity = 9.8f;
 
     private Vector3 gravity;
@@ -19,11 +19,6 @@ public class GravityBehaviour : MonoBehaviour {
 
     private Vector3 CalculateGravity(float time, Vector3 speed)
     {
-        if (hasGravity)
-        {
-            return (gravity * time);
-        }
-
-        return speed;
+        return (gravity * time);
     }
 }
