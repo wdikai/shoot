@@ -15,9 +15,4 @@ public class Initialize : MonoBehaviour {
         };
         Manager.Instance.Initialize(Size, BulletFabric);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
