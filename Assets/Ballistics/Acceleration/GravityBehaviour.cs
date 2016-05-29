@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class GravityBehaviour : MonoBehaviour {
 
@@ -14,15 +13,15 @@ public class GravityBehaviour : MonoBehaviour {
         var flightBehaviour = GetComponent< FlightBehaviour>();
         if (flightBehaviour != null)
         {
-            flightBehaviour.Accelerations.Add(CalculateSpeed);
+            flightBehaviour.Accelerations.Add(CalculateGravity);
         }
     }
 
-    private Vector3 CalculateSpeed(float time, Vector3 speed)
+    private Vector3 CalculateGravity(float time, Vector3 speed)
     {
         if (hasGravity)
         {
-            return speed + (gravity * time);
+            return (gravity * time);
         }
 
         return speed;

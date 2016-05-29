@@ -17,6 +17,7 @@ public class AtmosphereBehaviour : MonoBehaviour {
     private float Rv = 461.5f;
     private float pd;
     private float pv;
+
     void Start()
     {
         pd = AbsoluteDensity * 133.322f;
@@ -25,11 +26,11 @@ public class AtmosphereBehaviour : MonoBehaviour {
         var flightBehaviour = GetComponent<FlightBehaviour>();
         if (flightBehaviour != null)
         {
-            flightBehaviour.Accelerations.Add(CalculateSpeed);
+            flightBehaviour.Accelerations.Add(CalculateAtmosphereAcceleration);
         }
     }
 
-    private Vector3 CalculateSpeed(float time, Vector3 speed)
+    private Vector3 CalculateAtmosphereAcceleration(float time, Vector3 speed)
     {
         if (hasAtmosphere)
         {
@@ -40,7 +41,7 @@ public class AtmosphereBehaviour : MonoBehaviour {
             var vector = speed.normalized * -1;
             var acceleration = vector * (temp1 / temp2 * temp3 * temp4);
 
-            return speed + acceleration;
+            return acceleration;
         }
 
         return speed;

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using Assets.Ballistics.Acceleration;
 
@@ -30,10 +29,14 @@ public class FlightBehaviour : MonoBehaviour {
         var time = Time.deltaTime;
         var startPosition = transform.position;
 
+        var newSpeed = VSpeed;
+
         foreach (var acceleration in Accelerations)
         {
-            VSpeed = acceleration(time, VSpeed);
+            newSpeed += acceleration(time, VSpeed);
         }
+
+        VSpeed = newSpeed;
 
         var endPosition = startPosition + VSpeed * time;
         var distance = Vector3.Distance(startPosition, endPosition);
