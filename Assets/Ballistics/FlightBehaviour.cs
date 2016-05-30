@@ -73,7 +73,6 @@ public class FlightBehaviour : MonoBehaviour {
 
     private void OnHit(RaycastHit hit)
     {
-        var message = "Bullet collide in position:" + hit.point;
         var hitRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
         Instantiate(ShotDecal, hit.point, hitRotation);
         transform.gameObject.SetActive(false);
