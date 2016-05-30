@@ -3,22 +3,28 @@ using UnityEngine;
 
 public class AtmosphereBehaviour : MonoBehaviour
 {
-    public float Temperature = 30f;
-    public float AbsolutePressure = 700;
-
-    public float FormResistanceCoeficient = 0.47f;
-    public float Mass = 30f;
-    public float Square = 1.256f;
-    public float GasConstant = 287.06f;
-
-
     private float absolutePressure;
     private float temperature;
+    private float gasConstant;
+
+    private float formResistanceCoeficient;
+    private float square;
+    private float mass;
+
+
+    private Vector3 accel;
 
     void Start()
     {
-        absolutePressure = AbsolutePressure * 133.322f;
-        temperature = Temperature + 273;
+        var properties = transform.GetComponent<BulletProperties>();
+
+        absolutePressure = properties.AbsolutePressureAir * 133.322f;
+        temperature = properties.TemperatureAir + 273;
+        gasConstant = properties.GasConstant;
+
+        formResistanceCoeficient = properties.BulletFormResistanceCoeficient;
+        square = properties.BulletSquare;
+        mass = properties.BulletMass;
 
         var flightBehaviour = GetComponent<FlightBehaviour>();
         if (flightBehaviour != null)
@@ -29,14 +35,20 @@ public class AtmosphereBehaviour : MonoBehaviour
 
     private Vector3 CalculateAtmosphereAcceleration(float time, Vector3 speed)
     {
-        var speedSquare = (float)Math.Pow(speed.magnitude, 2) * time;
-        var density = absolutePressure / (GasConstant * temperature);
-        var vector = speed.normalized * -1;
-        var force = FormResistanceCoeficient * Square * density * speedSquare / 2;
-        var acceleration = vector * (force / Mass);
+
+        var speedSquare = (float)Math.Pow(speed.magnitude, 2);
+        var density = absolutePressure / (gasConstant * temperature);
+        var direction = speed.normalized * -1;
+        var force = formResistanceCoeficient * square * density * speedSquare / 2;
+        var acceleration = direction * (force / mass) * time;
+
+        accel = acceleration;
 
         return acceleration;
     }
 
-
+    void OnGUI()
+    {
+        GUI.Label(new Rect(880, 360, 200, 40), new GUIContent("accel: " + accel));
+    }
 }
