@@ -39,7 +39,7 @@ public class AtmosphereBehaviour : MonoBehaviour
         var speedSquare = (float)Math.Pow(speed.magnitude, 2);
         var density = absolutePressure / (gasConstant * temperature);
         var direction = speed.normalized * -1;
-        var force = formResistanceCoeficient * square * density * speedSquare / 2;
+        var force = formResistanceCoeficient * square * density * speedSquare / 4;
         var acceleration = direction * (force / mass) * time;
 
         accel = acceleration;

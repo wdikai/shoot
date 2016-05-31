@@ -44,7 +44,7 @@ public class WindBehaviour : MonoBehaviour
         {
             var speedSquare = (float)Math.Pow(Speed, 2);
             var density = absolutePressure / (gasConstant * temperature);
-            var force = formResistanceCoeficient * square * density * speedSquare / 2;
+            var force = formResistanceCoeficient * square * density * speedSquare / 4;
             var acceleration = Direction * (force / mass) * time;
 
             return acceleration;
