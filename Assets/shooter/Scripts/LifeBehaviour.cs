@@ -8,12 +8,12 @@ public class LifeBehaviour : MonoBehaviour {
 
     private float lifeTime;
 
-    public void Start()
+    private void Start()
     {
         lifeTime = 0f;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         var time = Time.deltaTime;
         lifeTime += time;
@@ -23,7 +23,7 @@ public class LifeBehaviour : MonoBehaviour {
         }
     }
 
-    void Die()
+    private void Die()
     {
         if (this.RemoveWhenDie)
         {

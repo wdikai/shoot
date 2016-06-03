@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Ballistics.Acceleration.Utils;
+using System;
 using UnityEngine;
 
 public class WindBehaviour : MonoBehaviour
@@ -11,52 +12,48 @@ public class WindBehaviour : MonoBehaviour
     private float square;
     private float mass;
 
-    public float Speed = 0;
     public bool HasWind = false;
-    public Vector3 Direction = Vector3.zero;
 
-    void Start()
+    public Vector3 WindSpeed = Vector3.zero;
+
+    private void Start()
     {
-        Speed = 0;
-        HasWind = false;
-        Direction = Vector3.zero;
-
-        var properties = transform.GetComponent<BulletProperties>();
-
-        absolutePressure = properties.AbsolutePressureAir * 133.322f;
-        temperature = properties.TemperatureAir + 273;
-        gasConstant = properties.GasConstant;
-
-        formResistanceCoeficient = properties.BulletFormResistanceCoeficient;
-        square = properties.BulletSquare;
-        mass = properties.BulletMass;
-
         var flightBehaviour = GetComponent<FlightBehaviour>();
         if (flightBehaviour != null)
         {
-            flightBehaviour.Accelerations.Add(CalculateWindAcceleration);
+            HasWind = false;
+            WindSpeed = Vector3.zero;
+
+            var properties = transform.GetComponent<BulletProperties>();
+            if (properties != null)
+            {
+                absolutePressure = PressureConverter.MmHgToPascal(properties.AbsolutePressureAir);
+
+                temperature = TemeperatureConverter.CelsiusToKelvin(properties.TemperatureAir);
+                temperature = temperature != 0 ? temperature : BulletProperties.DefaultTemperature;
+
+                gasConstant = properties.GasConstant != 0 ? properties.GasConstant : BulletProperties.DefaultGasConstant;
+
+                formResistanceCoeficient = properties.BulletFrontFormResistanceCoeficient;
+                square = properties.BulletSquare;
+
+                mass = properties.BulletMass != 0 ? properties.BulletMass : BulletProperties.DefaultBulletMass;
+
+                flightBehaviour.Accelerations.Add(CalculateWindAcceleration);
+            }
         }
     }
 
-    private Vector3 CalculateWindAcceleration(float time, Vector3 speed)
+    private Vector3 CalculateWindAcceleration(Vector3 speed)
     {
         if (HasWind)
         {
-            var speedSquare = (float)Math.Pow(Speed, 2);
-            var density = absolutePressure / (gasConstant * temperature);
-            var force = formResistanceCoeficient * square * density * speedSquare / 4;
-            var acceleration = Direction * (force / mass) * time;
+            var force = ForceUtil.AirForce(WindSpeed, formResistanceCoeficient, absolutePressure, square, temperature, gasConstant);
+            var acceleration = (force / mass);
 
             return acceleration;
         }
 
         return Vector3.zero;
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(880, 240, 200, 40), new GUIContent("Speed: " + Speed));
-        GUI.Label(new Rect(880, 280, 200, 40), new GUIContent("Direction: " + Direction));
-        GUI.Label(new Rect(880, 320, 200, 40), new GUIContent("HasWind: " + HasWind));
     }
 }

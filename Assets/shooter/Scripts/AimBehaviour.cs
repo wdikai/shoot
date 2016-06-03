@@ -15,7 +15,7 @@ public class AimBehaviour : MonoBehaviour {
     private Camera mainCamera;
     private MouseLook mouseLook;
 
-    void Start ()
+    private void Start ()
     {
         mainCamera = Camera.GetComponent<Camera>();
         mouseLook = FirstPersonController.m_MouseLook;
@@ -23,14 +23,14 @@ public class AimBehaviour : MonoBehaviour {
         mouseLook.YSensitivity = 1;
     }
 
-    void Update () {
+    private void Update () {
         if (Input.GetMouseButtonDown(1))
         {
             if (aim) { AimOff(); } else { AimOn(); }
         }
     }
 
-    void AimOn()
+    private void AimOn()
     {
         aim = true;
         if (mainCamera != null)
@@ -43,7 +43,7 @@ public class AimBehaviour : MonoBehaviour {
         weapon.SetActive(false);
     }
 
-    void AimOff()
+    private void AimOff()
     {
         aim = false;
         if (mainCamera != null)
@@ -56,7 +56,7 @@ public class AimBehaviour : MonoBehaviour {
         weapon.SetActive(true);
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         if (aim)
         {

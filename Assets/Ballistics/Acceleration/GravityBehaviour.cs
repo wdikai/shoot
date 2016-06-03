@@ -17,8 +17,8 @@ public class GravityBehaviour : MonoBehaviour
         }
     }
 
-    private Vector3 CalculateGravity(float time, Vector3 speed)
+    private Vector3 CalculateGravity(Vector3 speed)
     {
-        return (gravity * time) / 2;
+        return gravity;
     }
 }

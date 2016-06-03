@@ -5,7 +5,7 @@ public class TargetShowBehaviour : MonoBehaviour {
 
     public GameObject Camera;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -13,7 +13,7 @@ public class TargetShowBehaviour : MonoBehaviour {
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {

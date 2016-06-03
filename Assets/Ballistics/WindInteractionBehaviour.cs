@@ -6,26 +6,32 @@ public class WindInteractionBehaviour : MonoBehaviour
     public float Speed = 10;
     public Vector3 Direction = new Vector3(0, 0, 1);
 
-    void OnTriggerEnter(Collider other)
+    private Vector3 windSpeed;
+
+    private void Start() {
+        windSpeed = Direction.normalized * Speed;
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WindInteraction"))
         {
             var windBehaviour = other.GetComponent<WindBehaviour>();
             if (windBehaviour != null) {
-                windBehaviour.Speed = Speed;
-                windBehaviour.Direction = Direction.normalized;
+                windBehaviour.WindSpeed = windSpeed;
                 windBehaviour.HasWind = true;
             }
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("WindInteraction"))
         {
             var windBehaviour = other.GetComponent<WindBehaviour>();
             if (windBehaviour != null)
-            { 
+            {
+                windBehaviour.WindSpeed = Vector3.zero;
                 windBehaviour.HasWind = false;
             }
         }

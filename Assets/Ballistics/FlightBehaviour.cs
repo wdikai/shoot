@@ -2,47 +2,66 @@
 using System.Collections.Generic;
 using Assets.Ballistics.Acceleration;
 
-public class FlightBehaviour : MonoBehaviour {
+public class FlightBehaviour : MonoBehaviour
+{
     public GameObject ShotDecal;
 
-    public int LifeTime = 10;
-
-    public float Speed = 600f;
-    public float StandardDeviation = 0.5f;
-
-    public Vector3 VSpeed;
+    private Vector3 VSpeed;
     public List<Accelaration> Accelerations = new List<Accelaration>();
 
     private float lifeTime;
+    private float deltaTime;
+    private float maximumLifeTime;
 
-    private Vector3 deviation;
-
+    private float speed;
+    private float standardDeviation;
 
     public void init(Transform init)
     {
         lifeTime = 0f;
+
         gameObject.transform.position = init.position;
         gameObject.transform.rotation = init.rotation;
         gameObject.SetActive(false);
 
-        var deviationX = Random.Range(-StandardDeviation, StandardDeviation);
-        var deviationY = Random.Range(-StandardDeviation, StandardDeviation);
-        var deviationZ = Random.Range(-StandardDeviation, StandardDeviation);
+        var deviationX = Random.Range(-standardDeviation, standardDeviation);
+        var deviationY = Random.Range(-standardDeviation, standardDeviation);
+        var deviationZ = Random.Range(-standardDeviation, standardDeviation);
 
-        deviation = new Vector3(deviationX, deviationY, deviationZ);
+        var deviation = new Vector3(deviationX, deviationY, deviationZ);
 
-        VSpeed = transform.forward * Speed + deviation;
+        VSpeed = transform.forward * speed + deviation;
     }
-    	
-	void FixedUpdate() {
+
+    private void Start()
+    {
+        var properties = transform.GetComponent<BulletProperties>();
+        if (properties != null)
+        {
+            maximumLifeTime = properties.LifeTime;
+            speed = properties.Speed;
+            standardDeviation = properties.StandardDeviation;
+        }
+        else
+        {
+            maximumLifeTime = BulletProperties.DefaultLifeTime;
+            speed = BulletProperties.DefaultSpeed;
+            standardDeviation = BulletProperties.DefaultStandardDeviation;
+        }
+    }
+
+    private void FixedUpdate()
+    {
         var time = Time.deltaTime;
+        deltaTime = time;
         var startPosition = transform.position;
 
         var newSpeed = VSpeed;
+        var squareTime = Mathf.Pow(time, 2);
 
         foreach (var acceleration in Accelerations)
         {
-            newSpeed += acceleration(time, VSpeed);
+            newSpeed += acceleration(VSpeed) * time;
         }
 
         VSpeed = newSpeed;
@@ -50,7 +69,7 @@ public class FlightBehaviour : MonoBehaviour {
         var endPosition = startPosition + VSpeed * time;
         var distance = Vector3.Distance(startPosition, endPosition);
         var direction = (endPosition - startPosition).normalized;
-        
+
         var ray = new Ray(startPosition, direction);
         var colliders = Physics.RaycastAll(ray, distance);
         foreach (var hit in colliders)
@@ -65,7 +84,7 @@ public class FlightBehaviour : MonoBehaviour {
         transform.forward = direction;
         transform.position = endPosition;
         lifeTime += time;
-        if (lifeTime > LifeTime)
+        if (lifeTime > maximumLifeTime)
         {
             gameObject.SetActive(false);
         }
@@ -76,14 +95,5 @@ public class FlightBehaviour : MonoBehaviour {
         var hitRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
         Instantiate(ShotDecal, hit.point, hitRotation);
         transform.gameObject.SetActive(false);
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(880, 40, 200, 40), new GUIContent("Speed: " + VSpeed));
-        GUI.Label(new Rect(880, 80, 200, 40), new GUIContent("Speed: " + VSpeed.magnitude));
-        GUI.Label(new Rect(880, 120, 200, 40), new GUIContent("Position: " + transform.position));
-        GUI.Label(new Rect(880, 120, 200, 40), new GUIContent("Position: " + transform.position));
-        GUI.Label(new Rect(880, 160, 200, 40), new GUIContent("Time: " + lifeTime));
     }
 }

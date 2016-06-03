@@ -12,20 +12,21 @@ public class RotateCameraBehaviour : MonoBehaviour
     private float xAxis;
     private float yAxis;
 
-    private void Start() {
+    private void Start()
+    {
         xAxis = -25;
         yAxis = -25;
-}
+    }
 
     private void Update()
     {
-        if(xAxis < 25)
-        xAxis += XSpeed * Time.deltaTime;
+        if (xAxis < 25)
+            xAxis += XSpeed * Time.deltaTime;
         if (yAxis < 25)
             yAxis += YSpeed * Time.deltaTime;
         Quaternion rotation = Quaternion.Euler(yAxis, xAxis, 0.0f);
         transform.rotation = rotation;
         transform.position = target.position + rotation * new Vector3(0.0f, 0.0f, -Distance);
-}
+    }
 
 }

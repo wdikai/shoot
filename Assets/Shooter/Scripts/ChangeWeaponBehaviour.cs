@@ -8,7 +8,7 @@ public class ChangeWeaponBehaviour : MonoBehaviour {
 
     private int currentItem = 0;
 
-    void Start()
+    private void Start()
     {
         for (int i = 0; i < Weapons.Length; i++)
         {
@@ -16,8 +16,8 @@ public class ChangeWeaponBehaviour : MonoBehaviour {
         }
         this.Show(this.currentItem);
     }
-    	
-	void Update ()
+
+    private void Update ()
     {
         for (var item = 0; item < this.key.Length; item++)
         {
@@ -30,7 +30,7 @@ public class ChangeWeaponBehaviour : MonoBehaviour {
         }
     }
 
-    void Hide(int index)
+    private void Hide(int index)
     {
         if (index >= 0 && index < this.Weapons.Length)
         {
@@ -38,7 +38,7 @@ public class ChangeWeaponBehaviour : MonoBehaviour {
         }
     }
 
-    void Show(int index)
+    private void Show(int index)
     {
         if (index >= 0 && index < this.Weapons.Length)
         {

@@ -14,7 +14,7 @@ public class ShotBehavior : MonoBehaviour
 
     private float timeout;
 
-    void Update()
+    private void Update()
     {
         if (timeout <= 0)
         {
@@ -31,7 +31,7 @@ public class ShotBehavior : MonoBehaviour
 
     }
 
-    void Shot()
+    private void Shot()
     {
         var bullet = Manager.Instance.GetBullet(Ammo.name);
         if (bullet != null)

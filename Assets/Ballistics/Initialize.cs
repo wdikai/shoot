@@ -4,21 +4,23 @@ using Assets.Ballistics.Core;
 
 public class Initialize : MonoBehaviour
 {
-    public GameObject[] ammo;
+    public GameObject[] Ammo;
+    public int[] Sizes;
 
-    public int Size = 10;
+    private const int Size = 10;
 
-    void Start()
+    private void Start()
     {
-        foreach (var bullet in ammo)
+        for (int i = 0; i < Ammo.Length; i++)
         {
+            var size = i < Sizes.Length ? Sizes[i] : Size;
             Func<GameObject> BulletFabric = () =>
             {
-                var temp = Instantiate(bullet);
+                var temp = Instantiate(Ammo[i]);
                 temp.SetActive(false);
                 return temp;
             };
-            Manager.Instance.AddBullet(bullet.name, Size, BulletFabric);
+            Manager.Instance.AddBullet(Ammo[i].name, size, BulletFabric);
         }
     }
 }
