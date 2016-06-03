@@ -10,7 +10,6 @@ public class FlightBehaviour : MonoBehaviour
     public List<Accelaration> Accelerations = new List<Accelaration>();
 
     private float lifeTime;
-    private float deltaTime;
     private float maximumLifeTime;
 
     private float speed;
@@ -18,6 +17,20 @@ public class FlightBehaviour : MonoBehaviour
 
     public void init(Transform init)
     {
+        var properties = transform.GetComponent<BulletProperties>();
+        if (properties != null)
+        {
+            maximumLifeTime = properties.LifeTime;
+            speed = properties.Speed;
+            standardDeviation = properties.StandardDeviation;
+        }
+        else
+        {
+            maximumLifeTime = BulletProperties.DefaultLifeTime;
+            speed = BulletProperties.DefaultSpeed;
+            standardDeviation = BulletProperties.DefaultStandardDeviation;
+        }
+
         lifeTime = 0f;
 
         gameObject.transform.position = init.position;
@@ -35,25 +48,11 @@ public class FlightBehaviour : MonoBehaviour
 
     private void Start()
     {
-        var properties = transform.GetComponent<BulletProperties>();
-        if (properties != null)
-        {
-            maximumLifeTime = properties.LifeTime;
-            speed = properties.Speed;
-            standardDeviation = properties.StandardDeviation;
-        }
-        else
-        {
-            maximumLifeTime = BulletProperties.DefaultLifeTime;
-            speed = BulletProperties.DefaultSpeed;
-            standardDeviation = BulletProperties.DefaultStandardDeviation;
-        }
     }
 
     private void FixedUpdate()
     {
         var time = Time.deltaTime;
-        deltaTime = time;
         var startPosition = transform.position;
 
         var newSpeed = VSpeed;
