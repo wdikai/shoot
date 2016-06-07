@@ -14,6 +14,8 @@ public class AtmosphereBehaviour : MonoBehaviour
 
     private Vector3 accel;
 
+    public bool Enable = true;
+
     private void Start()
     {
         var flightBehaviour = GetComponent<FlightBehaviour>();
@@ -42,9 +44,13 @@ public class AtmosphereBehaviour : MonoBehaviour
 
     private Vector3 CalculateAtmosphereAcceleration(Vector3 speed)
     {
-        var force = ForceUtil.AirForce(speed, formResistanceCoeficient, absolutePressure, square, temperature, gasConstant);
-        var acceleration = (force / mass);
+        if (Enable)
+        {
+            var force = ForceUtil.AirForce(speed, formResistanceCoeficient, absolutePressure, square, temperature, gasConstant);
+            var acceleration = (force / mass);
 
-        return acceleration;
+            return acceleration;
+        }
+        return Vector3.zero;
     }
 }

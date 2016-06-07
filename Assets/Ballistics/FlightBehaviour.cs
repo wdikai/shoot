@@ -6,7 +6,7 @@ public class FlightBehaviour : MonoBehaviour
 {
     public GameObject ShotDecal;
 
-    private Vector3 VSpeed;
+    public Vector3 VSpeed;
     public List<Accelaration> Accelerations = new List<Accelaration>();
 
     private float lifeTime;
@@ -15,7 +15,7 @@ public class FlightBehaviour : MonoBehaviour
     private float speed;
     private float standardDeviation;
 
-    public void init(Transform init)
+    public void Init(Transform init)
     {
         var properties = transform.GetComponent<BulletProperties>();
         if (properties != null)
@@ -48,6 +48,7 @@ public class FlightBehaviour : MonoBehaviour
 
     private void Start()
     {
+        Accelerations = new List<Accelaration>();
     }
 
     private void FixedUpdate()
@@ -56,7 +57,6 @@ public class FlightBehaviour : MonoBehaviour
         var startPosition = transform.position;
 
         var newSpeed = VSpeed;
-        var squareTime = Mathf.Pow(time, 2);
 
         foreach (var acceleration in Accelerations)
         {
@@ -95,4 +95,10 @@ public class FlightBehaviour : MonoBehaviour
         Instantiate(ShotDecal, hit.point, hitRotation);
         transform.gameObject.SetActive(false);
     }
+
+    //void OnGUI()
+    //{
+    //    GUI.Label(new Rect(Screen.width - 200, 150, 200, 40), VSpeed.ToString());
+    //    GUI.Label(new Rect(Screen.width - 200, 190, 200, 40), "" + VSpeed.magnitude);
+    //}
 }

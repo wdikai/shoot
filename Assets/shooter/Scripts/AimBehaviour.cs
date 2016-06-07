@@ -35,7 +35,7 @@ public class AimBehaviour : MonoBehaviour {
         aim = true;
         if (mainCamera != null)
         {
-            mainCamera.depth = 2;
+            mainCamera.depth = 3;
             mainCamera.fieldOfView = 8;
         }
         mouseLook.XSensitivity = 0.1f;
@@ -63,6 +63,10 @@ public class AimBehaviour : MonoBehaviour {
             GUI.DrawTexture(new Rect(Screen.width / 2 - Screen.height / 2, 0, Screen.height, Screen.height), CrossFire);
             GUI.DrawTexture(new Rect(0, 0, Screen.width / 2 - Screen.height / 2, Screen.height), CrossFireShadow);
             GUI.DrawTexture(new Rect(Screen.width / 2 + Screen.height / 2, 0, Screen.width / 2 - Screen.height / 2, Screen.height), CrossFireShadow);
+        }
+        else
+        {
+            GUI.Label(new Rect(Screen.width - 300, Screen.height - 30, 300, 40), "Press right mouse button for toggle AIM mode");
         }
     }
 }

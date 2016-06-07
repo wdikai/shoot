@@ -12,6 +12,8 @@ public class WindBehaviour : MonoBehaviour
     private float square;
     private float mass;
 
+    public bool Enable = true;
+
     public bool HasWind = false;
 
     public Vector3 WindSpeed = Vector3.zero;
@@ -46,7 +48,7 @@ public class WindBehaviour : MonoBehaviour
 
     private Vector3 CalculateWindAcceleration(Vector3 speed)
     {
-        if (HasWind)
+        if (Enable && HasWind)
         {
             var force = ForceUtil.AirForce(WindSpeed, formResistanceCoeficient, absolutePressure, square, temperature, gasConstant);
             var acceleration = (force / mass);

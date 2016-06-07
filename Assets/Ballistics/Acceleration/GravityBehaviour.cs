@@ -2,7 +2,9 @@
 
 public class GravityBehaviour : MonoBehaviour
 {
-   
+
+    public bool Enable = true;
+
     public float Gravity = 9.8f;
 
     private Vector3 gravity;
@@ -19,6 +21,6 @@ public class GravityBehaviour : MonoBehaviour
 
     private Vector3 CalculateGravity(Vector3 speed)
     {
-        return gravity;
+        return Enable? gravity: Vector3.zero;
     }
 }
