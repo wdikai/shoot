@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class AimBehaviour : MonoBehaviour {
+public class AimBehaviour : MonoBehaviour
+{
 
     public Texture2D CrossFire;
     public Texture2D CrossFireShadow;
 
     public GameObject Camera;
-    public GameObject weapon;
+    public GameObject Weapon;
+    public GameObject Bullet;
 
     public FirstPersonController FirstPersonController;
 
@@ -15,7 +17,7 @@ public class AimBehaviour : MonoBehaviour {
     private Camera mainCamera;
     private MouseLook mouseLook;
 
-    private void Start ()
+    private void Start()
     {
         mainCamera = Camera.GetComponent<Camera>();
         mouseLook = FirstPersonController.m_MouseLook;
@@ -23,7 +25,8 @@ public class AimBehaviour : MonoBehaviour {
         mouseLook.YSensitivity = 1;
     }
 
-    private void Update () {
+    private void Update()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             if (aim) { AimOff(); } else { AimOn(); }
@@ -40,10 +43,11 @@ public class AimBehaviour : MonoBehaviour {
         }
         mouseLook.XSensitivity = 0.1f;
         mouseLook.YSensitivity = 0.1f;
-        weapon.SetActive(false);
+        Weapon.SetActive(false);
+        Bullet.transform.position += Vector3.left * -0.05f;
     }
 
-    private void AimOff()
+    public void AimOff()
     {
         aim = false;
         if (mainCamera != null)
@@ -53,7 +57,8 @@ public class AimBehaviour : MonoBehaviour {
         }
         mouseLook.XSensitivity = 1;
         mouseLook.YSensitivity = 1;
-        weapon.SetActive(true);
+        Weapon.SetActive(true);
+        Bullet.transform.position += Vector3.left * 0.05f;
     }
 
     private void OnGUI()

@@ -91,8 +91,9 @@ public class FlightBehaviour : MonoBehaviour
 
     private void OnHit(RaycastHit hit)
     {
-        var hitRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-        Instantiate(ShotDecal, hit.point, hitRotation);
+        Debug.LogWarning(hit.point + Vector3.forward);
+        var hitRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);        
+        Instantiate(ShotDecal, hit.point + (VSpeed.normalized * -0.5f), hitRotation);
         transform.gameObject.SetActive(false);
     }
 

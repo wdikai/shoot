@@ -67,6 +67,12 @@ public class ShotBehavior : MonoBehaviour
                 grph.Init();
             }
 
+            var aim = GetComponent<AimBehaviour>();
+            if (aim != null)
+            {
+                aim.AimOff();
+            }
+
             bullet.SetActive(true);
             SetInteraction(bullet);
             timeout = Timeout;
